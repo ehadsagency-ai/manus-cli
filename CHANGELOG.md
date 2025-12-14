@@ -1,3 +1,156 @@
+## [4.2.0] - 2025-01-15
+
+### 🚀 Major Release: Complete Spec-Kit Implementation
+
+This release completes the full GitHub Spec-Kit methodology with all 6 phases, enhancement commands, diagram generation, GitHub integration, CI/CD automation, analytics, and template library.
+
+### Added
+
+#### All 6 Phases Implemented
+- ✅ **Phase 4: Task Breakdown** - Break down plan into actionable, ordered tasks
+- ✅ **Phase 5: Implementation** - Execute tasks and track progress
+- ✅ **Phase 6: Clarification** - Identify and resolve ambiguities (optional)
+
+#### Enhancement Commands
+- `manus analyze` - Comprehensive artifact quality analysis
+- `manus checklist` - Run quality checklist validation
+- Automatic quality scoring (0-100%)
+- Consistency checking across artifacts
+- Actionable recommendations
+
+#### Diagram Generation
+- **Architecture diagrams** (Mermaid) - Component relationships
+- **Data flow diagrams** (D2) - Data movement visualization
+- **User journey diagrams** (Mermaid) - User experience flows
+- **Sequence diagrams** (Mermaid) - Interaction sequences
+- Auto-rendering to PNG using `manus-render-diagram`
+- Saved in `.manus/specs/*/diagrams/`
+
+#### GitHub Integration
+- `manus github sync` - Commit and push specs to GitHub
+- `manus github issues` - Create GitHub issues from tasks
+- `manus github branch <name>` - Create feature branches
+- `manus github pr` - Create pull requests
+- Automatic git initialization
+- Label management (spec-driven, effort-*)
+
+#### CI/CD Integration
+- Auto-generate **GitHub Actions** workflows
+- Support for Python, Node.js, Java, Go
+- **Docker Compose** configuration generation
+- Database service templates (Postgres, MySQL, MongoDB, Redis)
+- Test and build automation
+- Deployment pipeline scaffolding
+
+#### Analytics Dashboard
+- Track project metrics and progress
+- Quality score trends over time
+- Task completion rates
+- Timeline visualization
+- `manus analytics` command
+- JSON-based storage in `.manus/analytics.json`
+
+#### Template Library
+- **Preset templates**: web-app, rest-api, data-pipeline
+- Custom template creation and management
+- Template customization interface
+- Category-based organization (web, api, mobile, data, ml)
+- `manus templates list [category]`
+- `manus templates add <name>`
+- `manus templates customize <name>`
+
+### Changed
+- Workflow now executes all 6 phases (previously 3)
+- Enhanced splash screen with full statistics
+- Improved error handling and recovery
+- Better validation with specific quality gates
+- Metadata tracking for all artifacts
+
+### Technical Improvements
+- Modular architecture (`speckit/`, `integrations/`)
+- Comprehensive metadata in `metadata.json`
+- Rich CLI output with tables, panels, progress bars
+- Extensible plugin system foundation
+- JSON-based analytics and configuration
+
+### File Structure (Updated)
+```
+.manus/
+├── memory/
+│   └── constitution.md
+├── specs/
+│   └── feature-NNN-short-name/
+│       ├── spec.md
+│       ├── plan.md
+│       ├── tasks.md
+│       ├── implementation.md
+│       ├── clarifications.md (optional)
+│       ├── analysis.json
+│       ├── checklist-results.json
+│       ├── metadata.json
+│       └── diagrams/
+│           ├── architecture.mmd (or .png)
+│           ├── dataflow.d2 (or .png)
+│           ├── user-journey.mmd (or .png)
+│           └── sequence.mmd (or .png)
+├── analytics.json
+└── templates/
+    └── catalog.json
+```
+
+### New Commands Summary
+```bash
+# Enhancement commands
+manus analyze                    # Quality analysis
+manus checklist                  # Quality checklist
+
+# GitHub integration
+manus github sync                # Sync to GitHub
+manus github issues              # Create issues
+manus github branch <name>       # Create branch
+manus github pr                  # Create PR
+
+# Analytics
+manus analytics                  # Show dashboard
+
+# Templates
+manus templates list             # List templates
+manus templates add <name>       # Add template
+manus templates customize <name> # Customize template
+```
+
+### Breaking Changes
+None. Fully backward compatible with v4.0.0.
+
+### Migration from v4.0.0
+No migration needed. All new features are additive.
+
+**To use new features:**
+1. Update: `pip install --upgrade git+https://github.com/ehadsagency-ai/manus-cli.git`
+2. Run workflow: `manus chat "Create a todo app"`
+3. All 6 phases execute automatically
+4. Use new commands as needed
+
+### Performance
+- Phase execution: ~5-10 seconds per phase
+- Diagram generation: ~2-5 seconds
+- Quality analysis: ~1-2 seconds
+- GitHub operations: depends on network
+
+### Known Issues
+- Diagram rendering requires `manus-render-diagram` utility
+- GitHub operations require `gh` CLI to be installed and authenticated
+- Clarification phase is interactive (can be skipped)
+
+### Roadmap (v4.3+)
+- Real-time collaboration
+- Web dashboard for visualization
+- Advanced template marketplace
+- More CI/CD platform integrations
+- Enhanced AI-powered generation
+
+---
+
 # Changelog
 
 All notable changes to Manus CLI will be documented in this file.

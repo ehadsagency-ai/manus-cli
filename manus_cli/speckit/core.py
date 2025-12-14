@@ -219,7 +219,7 @@ class SpecKitEngine:
         with open(metadata_file, "r") as f:
             return json.load(f)
     
-    def show_phase_header(self, phase_num: int, phase_name: str, total_phases: int = 3):
+    def show_phase_header(self, phase_num: int, phase_name: str, total_phases: int = 6):
         """
         Display a phase header.
         
@@ -231,3 +231,174 @@ class SpecKitEngine:
         console.print()
         console.print(f"[bold cyan]Phase {phase_num}/{total_phases}: {phase_name}[/bold cyan]")
         console.print("━" * 60)
+    
+    def run_full_workflow(
+        self,
+        user_request: str,
+        role: str = "developer",
+        project_name: str = "project",
+        skip_clarification: bool = False
+    ) -> Tuple[bool, Dict[str, Any]]:
+        """
+        Run complete spec-driven workflow (all 6 phases)
+        
+        Returns:
+            Tuple of (success, results_dict)
+        """
+        from .constitution import ConstitutionPhase
+        from .specify import SpecificationPhase
+        from .plan import PlanningPhase
+        from .tasks import TaskBreakdownPhase
+        from .implement import ImplementationPhase
+        from .clarify import ClarificationPhase
+        from .enhancements import EnhancementCommands
+        from .diagrams import DiagramGenerator
+        
+        results = {
+            "success": False,
+            "phases": {},
+            "artifacts": {},
+            "errors": []
+        }
+        
+        try:
+            # Phase 1: Constitution
+            self.show_phase_header(1, "Constitution")
+            constitution_phase = ConstitutionPhase(self.memory_dir)
+            success, constitution_content = constitution_phase.execute(project_name, role)
+            results["phases"]["constitution"] = success
+            results["artifacts"]["constitution"] = str(constitution_phase.constitution_file)
+            
+            if not success:
+                results["errors"].append("Constitution phase failed")
+                return False, results
+            
+            # Phase 2: Specification
+            self.show_phase_header(2, "Specification")
+            feature_name = self._generate_feature_name(user_request)
+            feature_dir = self._create_feature_dir(feature_name)
+            
+            spec_phase = SpecificationPhase(feature_dir)
+            success, spec_content = spec_phase.execute(user_request, project_name, role)
+            results["phases"]["specification"] = success
+            results["artifacts"]["specification"] = str(spec_phase.spec_file)
+            
+            if not success:
+                results["errors"].append("Specification phase failed")
+                return False, results
+            
+            # Phase 3: Planning
+            self.show_phase_header(3, "Planning")
+            plan_phase = PlanningPhase(feature_dir)
+            success, plan_content = plan_phase.execute(spec_content, project_name, role)
+            results["phases"]["planning"] = success
+            results["artifacts"]["plan"] = str(plan_phase.plan_file)
+            
+            if not success:
+                results["errors"].append("Planning phase failed")
+                return False, results
+            
+            # Phase 4: Task Breakdown
+            self.show_phase_header(4, "Task Breakdown")
+            tasks_phase = TaskBreakdownPhase(feature_dir)
+            success, tasks_content = tasks_phase.execute(plan_content, spec_content, project_name)
+            results["phases"]["tasks"] = success
+            results["artifacts"]["tasks"] = str(tasks_phase.tasks_file)
+            
+            if not success:
+                results["errors"].append("Task breakdown phase failed")
+                return False, results
+            
+            # Phase 5: Implementation
+            self.show_phase_header(5, "Implementation")
+            impl_phase = ImplementationPhase(feature_dir)
+            success, impl_content = impl_phase.execute(tasks_content, plan_content, project_name)
+            results["phases"]["implementation"] = success
+            results["artifacts"]["implementation"] = str(impl_phase.implementation_file)
+            
+            if not success:
+                results["errors"].append("Implementation phase failed")
+                return False, results
+            
+            # Phase 6: Clarification (optional)
+            if not skip_clarification:
+                self.show_phase_header(6, "Clarification (Optional)")
+                clarify_phase = ClarificationPhase(feature_dir)
+                success, clarify_content = clarify_phase.execute(spec_content, plan_content, tasks_content)
+                results["phases"]["clarification"] = success
+                if clarify_content:
+                    results["artifacts"]["clarification"] = str(clarify_phase.clarifications_file)
+            
+            # Generate diagrams
+            console.print("\n[cyan]Generating diagrams...[/cyan]")
+            diagram_gen = DiagramGenerator(feature_dir)
+            diagrams = diagram_gen.generate_all(plan_content, spec_content)
+            results["artifacts"]["diagrams"] = [str(d) for d in diagrams]
+            
+            # Run quality analysis
+            console.print("\n[cyan]Running quality analysis...[/cyan]")
+            enhancements = EnhancementCommands(feature_dir)
+            analysis = enhancements.analyze()
+            results["quality_analysis"] = analysis
+            
+            results["success"] = True
+            
+            # Display summary
+            self._display_summary(results)
+            
+            return True, results
+            
+        except Exception as e:
+            console.print(f"[red]Error in workflow: {e}[/red]")
+            results["errors"].append(str(e))
+            return False, results
+    
+    def _generate_feature_name(self, user_request: str) -> str:
+        """Generate feature name from user request"""
+        branch_name = self.generate_branch_name(user_request)
+        feature_num = self.get_next_feature_number()
+        return f"feature-{feature_num:03d}-{branch_name}"
+    
+    def _create_feature_dir(self, feature_name: str) -> Path:
+        """Create feature directory"""
+        feature_dir = self.specs_dir / feature_name
+        feature_dir.mkdir(exist_ok=True)
+        return feature_dir
+    
+    def _display_summary(self, results: Dict[str, Any]):
+        """Display workflow summary"""
+        console.print("\n" + "="*60)
+        console.print(Panel(
+            "[bold green]Spec-Driven Workflow Complete![/bold green]\n"
+            "All phases executed successfully",
+            border_style="green"
+        ))
+        
+        # Phases summary
+        console.print("\n[bold]Phases Completed:[/bold]")
+        for phase, success in results["phases"].items():
+            status = "✓" if success else "✗"
+            color = "green" if success else "red"
+            console.print(f"  [{color}]{status}[/{color}] {phase.title()}")
+        
+        # Artifacts summary
+        console.print("\n[bold]Generated Artifacts:[/bold]")
+        for artifact_type, path in results["artifacts"].items():
+            if isinstance(path, list):
+                console.print(f"  • {artifact_type.title()}: {len(path)} files")
+            else:
+                console.print(f"  • {artifact_type.title()}")
+        
+        # Quality score
+        if "quality_analysis" in results:
+            score = results["quality_analysis"].get("quality_score", 0)
+            color = "green" if score >= 80 else "yellow" if score >= 60 else "red"
+            console.print(f"\n[bold]Quality Score:[/bold] [{color}]{score}%[/{color}]")
+        
+        # Next steps
+        console.print("\n[bold]Next Steps:[/bold]")
+        console.print("  1. Review generated specifications")
+        console.print("  2. Run: manus analyze  (for detailed analysis)")
+        console.print("  3. Run: manus checklist  (for quality checks)")
+        console.print("  4. Run: manus github sync  (to push to GitHub)")
+        console.print("  5. Run: manus github issues  (to create GitHub issues)")
