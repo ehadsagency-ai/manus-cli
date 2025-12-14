@@ -1,5 +1,6 @@
 """Evaluation & Testing Framework for Manus CLI v5.2"""
 import time
+from typing import Optional
 from typing import List, Dict, Any, Callable
 from dataclasses import dataclass, field
 from rich.console import Console
