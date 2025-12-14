@@ -1,144 +1,157 @@
-# Manus CLI
+# Manus CLI v2.0 🚀
 
-A powerful command-line interface for interacting with Manus AI, inspired by Claude CLI. Built with Python and Typer.
+A powerful, feature-rich command-line interface for interacting with Manus AI, inspired by Claude CLI and OpenAI best practices. Built with Python and Typer.
+
+## ✨ What's New in v2.0
+
+### 🎭 Professional Roles & System Prompts
+Choose from 12 predefined professional roles to get specialized responses:
+- **Developer** - Expert software development assistance
+- **Data Scientist** - Advanced data analysis and insights
+- **Writer** - Professional content creation
+- **Teacher** - Patient, educational explanations
+- And 8 more specialized roles!
+
+### ⚡ Streaming Responses
+Get real-time responses as they're generated - no more waiting for the complete response!
+
+### 💾 Conversation History
+Save, load, and manage your conversation history with persistent storage.
+
+### 🛡️ Enhanced Error Handling
+Automatic retries, rate limit handling, and clear error messages for a reliable experience.
+
+### ⚙️ Advanced Configuration
+Configure default mode, role, and streaming preferences for a personalized experience.
 
 ## Features
 
 - 🚀 **Fast and intuitive** - Simple commands to interact with Manus AI
 - 💬 **Interactive chat mode** - Have conversations with Manus AI directly in your terminal
+- 🎭 **12 Professional roles** - Specialized AI personas for different tasks
+- ⚡ **Streaming responses** - See responses in real-time
+- 💾 **Conversation history** - Save and resume conversations
 - 🔐 **Secure configuration** - API key stored securely in your home directory
 - 🎨 **Beautiful output** - Rich formatting with colors and markdown support
-- ⚡ **Multiple modes** - Support for different execution modes (speed, quality, etc.)
+- 🛡️ **Robust error handling** - Automatic retries and clear error messages
 - 📦 **Easy installation** - Install via pip or from source
 
 ## Installation
 
-### From PyPI (when published)
-
-```bash
-pip install manus-cli
-```
-
-### From Source
-
-```bash
-# Clone the repository
-git clone https://github.com/ehadsagency-ai/manus-cli.git
-cd manus-cli
-
-# Install in development mode
-pip install -e .
-
-# Or install normally
-pip install .
-```
-
-### Quick Install (One-liner)
+### From GitHub (Recommended)
 
 ```bash
 pip install git+https://github.com/ehadsagency-ai/manus-cli.git
 ```
 
+### From Source
+
+```bash
+git clone https://github.com/ehadsagency-ai/manus-cli.git
+cd manus-cli
+pip install .
+```
+
 ## Quick Start
 
-### 1. Configure your API key
+### 1. Configure your API key and preferences
 
 ```bash
-# Interactive configuration
-manus configure
-
-# Or provide the key directly
+# Basic configuration
 manus configure --api-key sk-your-api-key-here
+
+# Advanced configuration with defaults
+manus configure \
+  --api-key sk-your-api-key-here \
+  --mode speed \
+  --role developer \
+  --stream
 ```
 
-Your API key will be securely stored in `~/.config/manus/config.json`.
-
-Alternatively, you can set the `MANUS_API_KEY` environment variable:
+### 2. Explore available roles
 
 ```bash
-export MANUS_API_KEY=sk-your-api-key-here
+manus roles
 ```
 
-### 2. Start chatting
+### 3. Start chatting
 
 ```bash
-# Single message
-manus chat "Hello, how are you?"
+# Quick question
+manus chat "Explain quantum computing"
 
-# Interactive chat session
+# With specific role
+manus chat "Write a REST API" --role developer
+
+# With streaming
+manus chat "Tell me a story" --role writer --stream
+
+# Interactive session
 manus chat --interactive
-
-# Or simply
-manus chat -i
 ```
 
 ## Usage
 
-### Chat Commands
+### Available Commands
 
-Send a single message:
+| Command | Description |
+|---------|-------------|
+| `manus configure` | Configure API key and preferences |
+| `manus roles` | List all available roles/personas |
+| `manus chat <message>` | Send a message to Manus AI |
+| `manus chat -i` | Start interactive chat session |
+| `manus task <prompt>` | Create a new task |
+| `manus status <task-id>` | Check task status |
+| `manus history` | List saved conversations |
+| `manus --version` | Show version information |
+
+### Chat with Different Roles
 
 ```bash
-manus chat "Write a Python function to calculate fibonacci numbers"
+# Get code help from a developer
+manus chat "Debug this Python code" --role developer
+
+# Get data insights from a data scientist
+manus chat "Analyze this dataset" --role data-scientist
+
+# Get writing help from a content writer
+manus chat "Write a blog post intro" --role writer
+
+# Get teaching from a patient teacher
+manus chat "Explain machine learning" --role teacher
 ```
 
-Start an interactive session:
+### Streaming Responses
 
 ```bash
-manus chat --interactive
-```
+# Enable streaming for a single message
+manus chat "Write a long essay" --stream
 
-Use a specific mode:
+# Disable streaming (use default from config)
+manus chat "Quick question" --no-stream
 
-```bash
-manus chat "Explain quantum computing" --mode quality
+# Toggle in interactive mode
+manus chat -i
+You: /stream  # Toggle streaming on/off
 ```
 
 ### Interactive Mode Commands
 
-When in interactive mode, you can use these commands:
+When in interactive mode (`manus chat -i`), you can use these commands:
 
-- `/quit` or `/exit` - Exit the chat
-- `/clear` - Clear the screen
-- `/mode <mode>` - Change execution mode (e.g., `/mode quality`)
+| Command | Description |
+|---------|-------------|
+| `/quit` or `/exit` | Exit the chat |
+| `/clear` | Clear the screen |
+| `/mode <mode>` | Change execution mode |
+| `/role <role>` | Switch to a different role |
+| `/stream` | Toggle streaming on/off |
+| `/save` | Save current conversation |
+| `/history` | View conversation history |
+| `/roles` | List available roles |
+| `/help` | Show all commands |
 
-### Task Management
-
-Create a task and get the task ID:
-
-```bash
-manus task "Analyze this data and create a report"
-```
-
-Check task status:
-
-```bash
-manus status <task-id>
-```
-
-### Configuration
-
-View or update your configuration:
-
-```bash
-manus configure
-```
-
-### Version Information
-
-```bash
-manus --version
-```
-
-## Examples
-
-### Example 1: Quick Question
-
-```bash
-$ manus chat "What is the capital of France?"
-```
-
-### Example 2: Interactive Session
+### Example Interactive Session
 
 ```bash
 $ manus chat -i
@@ -146,35 +159,53 @@ $ manus chat -i
 ╭─────────────────────────────────────────────────╮
 │ Manus AI - Interactive Chat                    │
 │                                                  │
-│ Type your messages and press Enter to send.    │
+│ Current Role: Software Developer                │
+│ Mode: speed                                      │
+│ Streaming: Enabled                               │
+│                                                  │
 │ Commands:                                        │
 │   /quit or /exit - Exit the chat                │
-│   /clear - Clear the screen                     │
-│   /mode <mode> - Change execution mode          │
+│   /role <role> - Change role/persona            │
+│   /stream - Toggle streaming                     │
+│   ... and more                                   │
 ╰─────────────────────────────────────────────────╯
 
-You: Hello!
-Manus: [Response from Manus AI]
+You: Write a Python hello world function
+Manus: Here's a simple hello world function in Python:
 
-You: /mode quality
-Mode changed to: quality
+def hello_world():
+    print("Hello, World!")
 
-You: Tell me about AI
-Manus: [Detailed response in quality mode]
+You: /role teacher
+Role changed to: Patient Teacher
+
+You: Explain what this function does
+Manus: Great question! Let me break it down for you...
+
+You: /save
+Conversation saved: abc123...
 
 You: /quit
+Save conversation before exiting? [y/n]: y
 Goodbye!
 ```
 
-### Example 3: Creating a Task
+## Available Roles
 
-```bash
-$ manus task "Write a blog post about machine learning" --mode quality
-
-✓ Task created successfully!
-Task ID: abc123def456
-Status: pending
-```
+| Role Key | Name | Best For |
+|----------|------|----------|
+| `assistant` | Helpful Assistant | General queries (default) |
+| `developer` | Software Developer | Code, debugging, technical help |
+| `data-scientist` | Data Scientist | Data analysis, statistics, ML |
+| `writer` | Content Writer | Articles, blogs, creative writing |
+| `teacher` | Patient Teacher | Learning, explanations, education |
+| `analyst` | Business Analyst | Business strategy, market analysis |
+| `researcher` | Research Assistant | Research, fact-finding, citations |
+| `debugger` | Code Debugger | Finding and fixing code issues |
+| `architect` | Software Architect | System design, architecture |
+| `copywriter` | Marketing Copywriter | Marketing copy, persuasive text |
+| `consultant` | Technical Consultant | Tech advice, recommendations |
+| `reviewer` | Code Reviewer | Code review, best practices |
 
 ## Configuration
 
@@ -182,11 +213,51 @@ The CLI stores configuration in `~/.config/manus/config.json`:
 
 ```json
 {
-  "api_key": "sk-your-api-key-here"
+  "api_key": "sk-your-api-key-here",
+  "default_mode": "speed",
+  "default_role": "developer",
+  "stream": true
 }
 ```
 
-The file is created with restrictive permissions (0600) to ensure security.
+Conversation history is stored in `~/.config/manus/history/`.
+
+## Advanced Usage
+
+### Custom Role in Single Command
+
+```bash
+manus chat "Analyze this code" \
+  --role reviewer \
+  --mode quality \
+  --stream
+```
+
+### View Conversation History
+
+```bash
+manus history
+```
+
+Output:
+```
+╭─────────────────────────────────────────────────╮
+│ Saved Conversations                             │
+├─────────────┬──────────────────┬─────────────────┤
+│ ID          │ Date             │ Messages        │
+├─────────────┼──────────────────┼─────────────────┤
+│ abc123...   │ 2025-12-14 10:30 │ 15              │
+│ def456...   │ 2025-12-13 15:20 │ 8               │
+└─────────────┴──────────────────┴─────────────────┘
+```
+
+### Error Handling
+
+The CLI automatically handles:
+- **Rate limits**: Retries with exponential backoff
+- **Network errors**: Automatic retry mechanism
+- **Timeouts**: Clear timeout messages
+- **Invalid API keys**: Helpful configuration guidance
 
 ## Environment Variables
 
@@ -197,29 +268,9 @@ The file is created with restrictive permissions (0600) to ensure security.
 ### Setup Development Environment
 
 ```bash
-# Clone the repository
 git clone https://github.com/ehadsagency-ai/manus-cli.git
 cd manus-cli
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install in development mode with dependencies
 pip install -e .
-```
-
-### Running Tests
-
-```bash
-# Install test dependencies
-pip install pytest pytest-cov
-
-# Run tests
-pytest
-
-# Run with coverage
-pytest --cov=manus_cli
 ```
 
 ### Project Structure
@@ -227,48 +278,36 @@ pytest --cov=manus_cli
 ```
 manus-cli/
 ├── manus_cli/
-│   ├── __init__.py      # Package initialization
-│   ├── __main__.py      # Entry point for module execution
-│   ├── api.py           # Manus API client
-│   └── cli.py           # CLI application (Typer)
-├── setup.py             # Setup script
-├── pyproject.toml       # Modern Python packaging
-├── requirements.txt     # Dependencies
-├── README.md            # This file
-└── LICENSE              # MIT License
+│   ├── __init__.py           # Package initialization
+│   ├── api_enhanced.py       # Enhanced API client with retry logic
+│   ├── cli_enhanced.py       # Enhanced CLI with all features
+│   ├── roles.py              # Role definitions and system prompts
+│   ├── api.py                # Original API client (v1.0)
+│   └── cli.py                # Original CLI (v1.0)
+├── setup.py                  # Setup script
+├── pyproject.toml            # Modern Python packaging
+├── requirements.txt          # Dependencies
+├── README.md                 # This file
+├── CHANGELOG.md              # Version history
+├── INSTALLATION.md           # Installation guide
+├── EXAMPLES.md               # Usage examples
+└── LICENSE                   # MIT License
 ```
 
-## API Reference
+## What's Different from v1.0?
 
-### ManusClient
-
-The `ManusClient` class provides programmatic access to the Manus API:
-
-```python
-from manus_cli.api import ManusClient
-
-# Initialize client
-client = ManusClient(api_key="sk-your-api-key")
-
-# Create a task
-response = client.create_task(
-    prompt="Hello, Manus!",
-    mode="speed"
-)
-
-# Get task status
-status = client.get_task_status(task_id="abc123")
-```
+| Feature | v1.0 | v2.0 |
+|---------|------|------|
+| Roles/System Prompts | ❌ | ✅ 12 professional roles |
+| Streaming | ❌ | ✅ Real-time responses |
+| Conversation History | ❌ | ✅ Save/load/list |
+| Error Handling | Basic | ✅ Retry with backoff |
+| Configuration | API key only | ✅ Mode, role, streaming |
+| Interactive Commands | 3 commands | ✅ 8+ commands |
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## License
 
@@ -284,7 +323,8 @@ For issues, questions, or contributions, please visit:
 
 - Built with [Typer](https://typer.tiangolo.com/) - The framework for building CLI applications
 - Styled with [Rich](https://rich.readthedocs.io/) - Beautiful terminal output
-- Inspired by Claude CLI and other modern CLI tools
+- Inspired by Claude CLI and OpenAI best practices
+- Enhanced based on research from Claude and OpenAI documentation
 
 ---
 

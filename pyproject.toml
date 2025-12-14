@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "manus-cli"
-version = "1.0.0"
+version = "2.0.0"
 description = "A command-line interface for Manus AI"
 readme = "README.md"
 authors = [
@@ -38,7 +38,7 @@ Repository = "https://github.com/ehadsagency-ai/manus-cli"
 "Bug Tracker" = "https://github.com/ehadsagency-ai/manus-cli/issues"
 
 [project.scripts]
-manus = "manus_cli.cli:run"
+manus = "manus_cli.cli_enhanced:run"
 
 [tool.setuptools]
 packages = ["manus_cli"]
