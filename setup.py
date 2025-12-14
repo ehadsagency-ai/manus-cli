@@ -17,7 +17,7 @@ setup(
     description="A command-line interface for Manus AI",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/manus-cli",
+    url="https://github.com/ehadsagency-ai/manus-cli",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -44,7 +44,7 @@ setup(
     },
     keywords="manus ai cli command-line interface",
     project_urls={
-        "Bug Reports": "https://github.com/yourusername/manus-cli/issues",
-        "Source": "https://github.com/yourusername/manus-cli",
+        "Bug Reports": "https://github.com/ehadsagency-ai/manus-cli/issues",
+        "Source": "https://github.com/ehadsagency-ai/manus-cli",
     },
 )

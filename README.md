@@ -23,7 +23,7 @@ pip install manus-cli
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/manus-cli.git
+git clone https://github.com/ehadsagency-ai/manus-cli.git
 cd manus-cli
 
 # Install in development mode
@@ -36,7 +36,7 @@ pip install .
 ### Quick Install (One-liner)
 
 ```bash
-pip install git+https://github.com/yourusername/manus-cli.git
+pip install git+https://github.com/ehadsagency-ai/manus-cli.git
 ```
 
 ## Quick Start
@@ -198,7 +198,7 @@ The file is created with restrictive permissions (0600) to ensure security.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/manus-cli.git
+git clone https://github.com/ehadsagency-ai/manus-cli.git
 cd manus-cli
 
 # Create virtual environment
@@ -277,8 +277,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 For issues, questions, or contributions, please visit:
-- GitHub Issues: https://github.com/yourusername/manus-cli/issues
-- Documentation: https://github.com/yourusername/manus-cli#readme
+- GitHub Issues: https://github.com/ehadsagency-ai/manus-cli/issues
+- Documentation: https://github.com/ehadsagency-ai/manus-cli#readme
 
 ## Acknowledgments
 

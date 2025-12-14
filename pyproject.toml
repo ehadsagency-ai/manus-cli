@@ -32,10 +32,10 @@ dependencies = [
 requires-python = ">=3.8"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/manus-cli"
-Documentation = "https://github.com/yourusername/manus-cli#readme"
-Repository = "https://github.com/yourusername/manus-cli"
-"Bug Tracker" = "https://github.com/yourusername/manus-cli/issues"
+Homepage = "https://github.com/ehadsagency-ai/manus-cli"
+Documentation = "https://github.com/ehadsagency-ai/manus-cli#readme"
+Repository = "https://github.com/ehadsagency-ai/manus-cli"
+"Bug Tracker" = "https://github.com/ehadsagency-ai/manus-cli/issues"
 
 [project.scripts]
 manus = "manus_cli.cli:run"
