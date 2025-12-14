@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "manus-cli"
+version = "1.0.0"
+description = "A command-line interface for Manus AI"
+readme = "README.md"
+authors = [
+    {name = "Manus CLI Team", email = "support@manus.ai"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = ["manus", "ai", "cli", "command-line", "interface"]
+dependencies = [
+    "typer>=0.9.0",
+    "requests>=2.31.0",
+    "rich>=13.0.0",
+]
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/manus-cli"
+Documentation = "https://github.com/yourusername/manus-cli#readme"
+Repository = "https://github.com/yourusername/manus-cli"
+"Bug Tracker" = "https://github.com/yourusername/manus-cli/issues"
+
+[project.scripts]
+manus = "manus_cli.cli:run"
+
+[tool.setuptools]
+packages = ["manus_cli"]
