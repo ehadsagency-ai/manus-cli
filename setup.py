@@ -11,7 +11,7 @@ long_description = readme_file.read_text(encoding="utf-8") if readme_file.exists
 
 setup(
     name="manus-cli",
-    version="3.0.0",
+    version="4.0.0",
     author="Manus CLI Team",
     author_email="support@manus.ai",
     description="A command-line interface for Manus AI with Spec-Driven Development for rigorous thinking",
@@ -39,7 +39,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "manus=manus_cli.cli_v3:run",
+            "manus=manus_cli.cli_v4:main",
         ],
     },
     keywords="manus ai cli command-line interface",
