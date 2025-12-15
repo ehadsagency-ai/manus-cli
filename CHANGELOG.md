@@ -1,3 +1,50 @@
+## [5.5.0] - 2024-12-15
+
+### ✨ Interactive Splash Screen & Fixed Interactive Mode
+
+This release adds a beautiful interactive splash screen with "AND AFTER YOU" prompt and fixes the interactive chat mode.
+
+### Added
+
+#### Interactive Features
+- **`manus start` command**: New command that displays splash screen and enters interactive mode
+- **"AND AFTER YOU" splash screen**: Beautiful ASCII art with welcoming prompt
+- **Interactive mode fix**: `manus chat -i` now works without requiring MESSAGE argument
+- **Quick command reference**: Splash screen shows available commands and examples
+- **Exit commands**: Support for exit, quit, q, bye to leave interactive mode
+- **Keyboard interrupt handling**: Clean Ctrl+C exit
+
+### Changed
+- Version bumped from 5.4.0 to 5.5.0
+- `manus chat` MESSAGE argument now optional (for interactive mode)
+- README updated with `manus start` documentation
+- Interactive mode now shows splash screen automatically
+
+### Fixed
+- **Interactive mode error**: Fixed "Missing argument 'MESSAGE'" error when using `manus chat -i`
+- **Better UX**: Users now immediately understand they can interact after seeing splash screen
+
+### New Commands
+```bash
+manus start           # Show splash screen and enter interactive mode
+manus start --role developer  # Interactive mode with specific role
+manus chat -i         # Alternative way to start interactive mode
+```
+
+### Splash Screen Preview
+```
+███╗   ███╗ █████╗ ███╗   ██╗██╗   ██╗███████╗
+████╗ ████║██╔══██╗████╗  ██║██║   ██║██╔════╝
+██╔████╔██║███████║██╔██╗ ██║██║   ██║███████╗
+██║╚██╔╝██║██╔══██║██║╚██╗██║██║   ██║╚════██║
+██║ ╚═╝ ██║██║  ██║██║ ╚████║╚██████╔╝███████║
+╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
+
+✨ AND AFTER YOU ✨
+```
+
+---
+
 ## [5.4.0] - 2024-12-15
 
 ### 🔄 Auto-Update System

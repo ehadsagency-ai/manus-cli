@@ -13,7 +13,7 @@
 
 **Professional AI-Driven Command-Line Interface**
 
-[![Version](https://img.shields.io/badge/version-5.4.0-blue.svg)](https://github.com/ehadsagency-ai/manus-cli/releases)
+[![Version](https://img.shields.io/badge/version-5.5.0-blue.svg)](https://github.com/ehadsagency-ai/manus-cli/releases)
 [![Python](https://img.shields.io/badge/python-3.8+-green.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-passing-success.svg)](tests/)
@@ -331,7 +331,7 @@ Show CLI version and exit.
 
 ```bash
 manus --version
-# Output: Manus CLI v5.4.0
+# Output: Manus CLI v5.5.0
 ```
 
 #### `manus version`
@@ -340,6 +340,34 @@ Show detailed version information.
 ```bash
 manus version
 ```
+
+#### `manus start`
+Start Manus CLI with interactive splash screen.
+
+This command displays the beautiful **"AND AFTER YOU"** splash screen and enters interactive mode, making it immediately clear that you can start chatting with Manus AI.
+
+```bash
+# Start interactive mode with splash screen
+manus start
+
+# Start with specific role
+manus start --role developer
+
+# Start with specific mode
+manus start --mode quality
+```
+
+**Features:**
+- 🎨 Beautiful ASCII art splash screen
+- ✨ "AND AFTER YOU" welcoming prompt
+- 💬 Immediate interactive chat
+- 📋 Quick command reference
+- 🚀 Ready-to-use examples
+
+**Interactive commands:**
+- Type your message and press Enter
+- Type `exit`, `quit`, `q`, or `bye` to leave
+- Press `Ctrl+C` to exit anytime
 
 #### `manus configure`
 Configure CLI settings (API key, defaults, etc.).
@@ -381,15 +409,20 @@ manus chat "Explain" --mode quality
 # With spec-driven mode
 manus chat "Create an app" --spec-driven
 
-# Interactive mode
+# Interactive mode (same as 'manus start')
 manus chat -i
+
+# Interactive mode with role
+manus chat -i --role developer
 ```
 
 **Options**:
 - `--role, -r`: Choose a professional role (default: assistant)
 - `--mode, -m`: Choose execution mode (speed/balanced/quality)
 - `--spec-driven`: Force AI-CLI Driven workflow
-- `--interactive, -i`: Start interactive chat session
+- `--interactive, -i`: Start interactive chat session (shows splash screen)
+
+**Note:** `manus chat -i` is equivalent to `manus start` - both show the splash screen and enter interactive mode.
 
 #### `manus task`
 Create a task (similar to chat but task-oriented).

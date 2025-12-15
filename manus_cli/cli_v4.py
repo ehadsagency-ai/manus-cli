@@ -160,7 +160,7 @@ def roles():
 
 @app.command()
 def chat(
-    message: str = typer.Argument(..., help="Message to send"),
+    message: str = typer.Argument(None, help="Message to send (optional in interactive mode)"),
     role: str = typer.Option(None, "--role", "-r", help="Role to use"),
     mode: str = typer.Option(None, "--mode", "-m", help="Mode (speed/balanced/quality)"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Start interactive mode"),
@@ -173,6 +173,7 @@ def chat(
         manus chat "Hello, how are you?"
         manus chat "Create a todo app" --role developer
         manus chat "Build a REST API" --mode quality
+        manus chat -i  # Interactive mode
     """
     # Get API client
     client = get_api_client()
@@ -185,6 +186,16 @@ def chat(
     # Determine role and mode
     role = role or config.get("default_role", "assistant")
     mode = mode or config.get("default_mode", "quality")
+    
+    # Handle interactive mode
+    if interactive or message is None:
+        run_interactive_chat(client, role, mode, config, no_spec_driven)
+        return
+    
+    # Validate message for non-interactive mode
+    if not message:
+        console.print("[red]Error:[/red] MESSAGE is required (or use -i for interactive mode)")
+        raise typer.Exit(1)
     
     # Check if spec-driven mode should be used
     spec_driven_config = config.get("spec_driven", {})
@@ -218,6 +229,81 @@ def chat(
     except Exception as e:
         console.print(f"[red]Error:[/red] {e}")
         raise typer.Exit(1)
+
+
+def run_interactive_chat(
+    client: ManusClient,
+    role: str,
+    mode: str,
+    config: dict,
+    no_spec_driven: bool
+):
+    """
+    Run interactive chat session.
+    
+    Args:
+        client: API client
+        role: User's role
+        mode: Execution mode
+        config: Configuration dict
+        no_spec_driven: Whether to disable spec-driven mode
+    """
+    from .splash import show_interactive_splash
+    
+    # Show splash screen
+    show_interactive_splash()
+    
+    # Get system prompt
+    system_prompt = get_system_prompt(role)
+    
+    # Interactive loop
+    while True:
+        try:
+            # Get user input
+            user_input = Prompt.ask("[bold green]You[/bold green]")
+            
+            # Check for exit commands
+            if user_input.lower() in ["exit", "quit", "q", "bye"]:
+                console.print("\n[cyan]👋 Goodbye![/cyan]\n")
+                break
+            
+            # Skip empty input
+            if not user_input.strip():
+                continue
+            
+            # Check if spec-driven mode should be used
+            spec_driven_config = config.get("spec_driven", {})
+            use_spec_driven = (
+                spec_driven_config.get("enabled", True) and
+                spec_driven_config.get("auto_detect", True) and
+                not no_spec_driven
+            )
+            
+            if use_spec_driven:
+                should_use, complexity = should_use_spec_driven(user_input)
+                
+                if should_use:
+                    # Run spec-driven workflow
+                    run_spec_driven_workflow(user_input, role, mode, complexity, client)
+                    continue
+            
+            # Regular chat
+            console.print()
+            if config.get("streaming", True):
+                console.print(f"[bold cyan]{role.title()}:[/bold cyan] ", end="")
+                for chunk in client.stream_task(user_input, system_prompt=system_prompt, mode=mode):
+                    console.print(chunk, end="")
+                console.print("\n")  # New line after streaming
+            else:
+                response_text = client.chat(user_input, system_prompt=system_prompt, mode=mode)
+                console.print(f"[bold cyan]{role.title()}:[/bold cyan] {response_text}\n")
+        
+        except KeyboardInterrupt:
+            console.print("\n\n[cyan]👋 Goodbye![/cyan]\n")
+            break
+        except Exception as e:
+            console.print(f"\n[red]Error:[/red] {e}\n")
+            continue
 
 
 def run_spec_driven_workflow(
@@ -424,6 +510,33 @@ def version():
     table.add_row("Python", f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
     
     console.print(table)
+
+
+@app.command()
+def start(
+    role: str = typer.Option(None, "--role", "-r", help="Role to use"),
+    mode: str = typer.Option(None, "--mode", "-m", help="Mode (speed/balanced/quality)"),
+):
+    """
+    Start Manus CLI with interactive splash screen.
+    
+    This command displays the beautiful 'AND AFTER YOU' splash screen
+    and enters interactive mode, making it clear that you can start chatting.
+    """
+    # Get API client
+    client = get_api_client()
+    if not client:
+        raise typer.Exit(1)
+    
+    # Load config
+    config = load_config()
+    
+    # Determine role and mode
+    role = role or config.get("default_role", "assistant")
+    mode = mode or config.get("default_mode", "quality")
+    
+    # Run interactive chat with splash
+    run_interactive_chat(client, role, mode, config, no_spec_driven=False)
 
 
 @app.command()
