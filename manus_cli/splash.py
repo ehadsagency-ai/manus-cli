@@ -21,26 +21,32 @@ def show_splash_screen():
     they can start interacting with the CLI.
     """
     
-    # Main ASCII art banner
+    # Main ASCII art banner - split into two lines for better fit
     banner = """
-███╗   ███╗ █████╗ ███╗   ██╗██╗   ██╗███████╗
-████╗ ████║██╔══██╗████╗  ██║██║   ██║██╔════╝
-██╔████╔██║███████║██╔██╗ ██║██║   ██║███████╗
-██║╚██╔╝██║██╔══██║██║╚██╗██║██║   ██║╚════██║
-██║ ╚═╝ ██║██║  ██║██║ ╚████║╚██████╔╝███████║
-╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
+             █████╗ ██╗      ██████╗██╗     ██╗
+            ██╔══██╗██║     ██╔════╝██║     ██║
+            ███████║██║     ██║     ██║     ██║
+            ██╔══██║██║     ██║     ██║     ██║
+            ██║  ██║██║     ╚██████╗███████╗██║
+            ╚═╝  ╚═╝╚═╝      ╚═════╝╚══════╝╚═╝
+
+        ██████╗ ██████╗ ██╗██╗   ██╗███████╗███╗   ██╗
+        ██╔══██╗██╔══██╗██║██║   ██║██╔════╝████╗  ██║
+        ██║  ██║██████╔╝██║██║   ██║█████╗  ██╔██╗ ██║
+        ██║  ██║██╔══██╗██║╚██╗ ██╔╝██╔══╝  ██║╚██╗██║
+        ██████╔╝██║  ██║██║ ╚████╔╝ ███████╗██║ ╚████║
+        ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝
     """
     
     # Create the main panel
     console.print()
     console.print(Panel(
-        Align.center(
-            f"[bold cyan]{banner}[/bold cyan]\n\n"
-            f"[bold white]AI-POWERED COMMAND LINE INTERFACE[/bold white]\n"
-            f"[dim]Professional • Intelligent • Spec-Driven[/dim]"
-        ),
+        f"[bold cyan]{banner}[/bold cyan]\n\n"
+        f"[bold white]{'AI-POWERED COMMAND LINE INTERFACE':^90}[/bold white]\n"
+        f"[dim]{'Professional • Intelligent • Spec-Driven':^90}[/dim]",
         border_style="cyan",
-        padding=(1, 2)
+        padding=(1, 2),
+        width=96
     ))
     
     # Animated "AND AFTER YOU" prompt

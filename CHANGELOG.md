@@ -1,3 +1,21 @@
+## [5.5.2] - 2024-12-15
+
+### 🎨 Splash Screen Update
+
+This release updates the splash screen ASCII art to display "AI CLI DRIVEN" instead of "MANUS".
+
+### Changed
+- **Splash screen branding**: Updated ASCII art from "MANUS" to "AI CLI DRIVEN"
+- **Layout**: Split into two lines (AI CLI / DRIVEN) for better readability
+- **Visual consistency**: Maintains the beautiful "AND AFTER YOU" prompt
+
+### Technical Details
+- Updated `splash.py` with new ASCII art
+- Optimized panel width for proper display
+- All commands tested and verified
+
+---
+
 ## [5.5.1] - 2024-12-15
 
 ### 🐛 Hotfix Release
