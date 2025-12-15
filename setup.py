@@ -11,7 +11,7 @@ long_description = readme_file.read_text(encoding="utf-8") if readme_file.exists
 
 setup(
     name="manus-cli",
-    version="5.3.0",
+    version="5.5.0",
     author="Manus CLI Team",
     author_email="support@manus.ai",
     description="A command-line interface for Manus AI with Spec-Driven Development for rigorous thinking",
