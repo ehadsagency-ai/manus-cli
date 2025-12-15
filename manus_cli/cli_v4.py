@@ -84,7 +84,9 @@ def save_config(config: dict):
 
 
 def get_api_client() -> Optional[ManusClient]:
-    """Get configured API client."""
+    """Get configured API client with CLI session ID."""
+    from .session import get_cli_session_id
+    
     config = load_config()
     api_key = config.get("api_key")
     
@@ -92,7 +94,10 @@ def get_api_client() -> Optional[ManusClient]:
         console.print("[red]Error:[/red] API key not configured. Run [cyan]manus configure[/cyan] first.")
         return None
     
-    return ManusClient(api_key=api_key)
+    # Get or create CLI session ID (separate from Web)
+    session_id = get_cli_session_id()
+    
+    return ManusClient(api_key=api_key, session_id=session_id)
 
 
 @app.command()
@@ -538,6 +543,49 @@ def history(
         message = entry.get("message", "")
         
         console.print(f"[dim]{timestamp}[/dim] [cyan]{role}:[/cyan] {message[:100]}...")
+
+
+@app.command()
+def session(
+    clear: bool = typer.Option(False, "--clear", help="Clear current session"),
+    new: bool = typer.Option(False, "--new", help="Create new session"),
+):
+    """
+    Manage CLI session (separate from Web interface).
+    
+    Examples:
+        manus session          # Show current session info
+        manus session --new    # Start a new session
+        manus session --clear  # Clear current session
+    """
+    from .session import session_manager
+    
+    if clear:
+        session_manager.clear_session()
+        console.print("[green]✓[/green] Session cleared")
+        return
+    
+    if new:
+        session_id = session_manager.create_new_session()
+        console.print(f"[green]✓[/green] New session created: [cyan]{session_id}[/cyan]")
+        return
+    
+    # Show session info
+    info = session_manager.get_session_info()
+    if not info:
+        console.print("[yellow]No active session[/yellow]")
+        return
+    
+    table = Table(title="CLI Session Info")
+    table.add_column("Property", style="cyan")
+    table.add_column("Value", style="white")
+    
+    table.add_row("Session ID", info.get("session_id", "N/A"))
+    table.add_row("Created At", info.get("created_at", "N/A"))
+    table.add_row("Source", info.get("source", "N/A"))
+    
+    console.print(table)
+    console.print("\n[dim]Note: CLI sessions are separate from Web interface sessions[/dim]")
 
 
 @app.command()

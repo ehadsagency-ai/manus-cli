@@ -28,12 +28,13 @@ class ManusClient:
     CONFIG_FILE = CONFIG_DIR / "config.json"
     HISTORY_DIR = CONFIG_DIR / "history"
     
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key: Optional[str] = None, session_id: Optional[str] = None):
         """
         Initialize the Manus API client
         
         Args:
             api_key: Optional API key. If not provided, will try to load from config or environment
+            session_id: Optional session ID to separate CLI from Web sessions
         """
         self.api_key = api_key or self._get_api_key()
         
@@ -42,6 +43,15 @@ class ManusClient:
                 "No API key found. Please set MANUS_API_KEY environment variable "
                 "or configure it using 'manus configure'"
             )
+        
+        # Generate or use provided session ID
+        if session_id:
+            self.session_id = session_id
+        else:
+            import uuid
+            from datetime import datetime
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            self.session_id = f"cli-{timestamp}-{uuid.uuid4().hex[:8]}"
         
         # Ensure history directory exists
         self.HISTORY_DIR.mkdir(parents=True, exist_ok=True)
@@ -171,7 +181,8 @@ class ManusClient:
         
         payload = {
             "prompt": prompt,
-            "mode": mode
+            "mode": mode,
+            "session_id": self.session_id  # Add session ID to separate CLI from Web
         }
         
         # Add system prompt if provided
