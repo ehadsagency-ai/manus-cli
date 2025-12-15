@@ -21,14 +21,14 @@ def show_splash_screen():
     they can start interacting with the CLI.
     """
     
-    # Main ASCII art banner - AI CLI (compact and perfectly centered)
+    # Main ASCII art banner - MANUS (original beautiful design)
     banner = """
- █████╗ ██╗     ██████╗██╗     ██╗
-██╔══██╗██║    ██╔════╝██║     ██║
-███████║██║    ██║     ██║     ██║
-██╔══██║██║    ██║     ██║     ██║
-██║  ██║██║    ╚██████╗███████╗██║
-╚═╝  ╚═╝╚═╝     ╚═════╝╚══════╝╚═╝
+███╗   ███╗ █████╗ ███╗   ██╗██╗   ██╗███████╗
+████╗ ████║██╔══██╗████╗  ██║██║   ██║██╔════╝
+██╔████╔██║███████║██╔██╗ ██║██║   ██║███████╗
+██║╚██╔╝██║██╔══██║██║╚██╗██║██║   ██║╚════██║
+██║ ╚═╝ ██║██║  ██║██║ ╚████║╚██████╔╝███████║
+╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
     """
     
     # Create the main panel - let Rich auto-size to content
