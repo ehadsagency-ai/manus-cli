@@ -13,7 +13,7 @@
 
 **Professional AI-Driven Command-Line Interface**
 
-[![Version](https://img.shields.io/badge/version-5.3.0-blue.svg)](https://github.com/ehadsagency-ai/manus-cli/releases)
+[![Version](https://img.shields.io/badge/version-5.4.0-blue.svg)](https://github.com/ehadsagency-ai/manus-cli/releases)
 [![Python](https://img.shields.io/badge/python-3.8+-green.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-passing-success.svg)](tests/)
@@ -331,7 +331,7 @@ Show CLI version and exit.
 
 ```bash
 manus --version
-# Output: Manus CLI v5.3.0
+# Output: Manus CLI v5.4.0
 ```
 
 #### `manus version`
@@ -410,6 +410,31 @@ manus history --limit 10
 
 # Clear history
 manus history --clear
+```
+
+#### `manus update`
+Update Manus CLI to the latest version from GitHub.
+
+```bash
+# Check for updates and install if available
+manus update
+```
+
+The CLI automatically checks for updates once per day and notifies you if a new version is available. You can disable this by setting `check_updates: false` in your configuration file (`~/.config/manus/config.json`).
+
+**Auto-update notification example**:
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│  ⚠️  New version available!                                 │
+│                                                             │
+│  Current version: 5.3.0                                     │
+│  Latest version:  5.4.0                                     │
+│                                                             │
+│  Run manus update to upgrade                                │
+│  Or: pip3 install --upgrade git+https://github.com/...     │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ---

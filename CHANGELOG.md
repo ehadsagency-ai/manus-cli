@@ -1,3 +1,53 @@
+## [5.4.0] - 2024-12-15
+
+### 🔄 Auto-Update System
+
+This release adds a complete auto-update system that keeps Manus CLI up-to-date automatically.
+
+### Added
+
+#### Auto-Update Features
+- **Automatic update checking**: CLI checks GitHub for new versions once per day
+- **Update notification**: Beautiful panel notification when new version is available
+- **`manus update` command**: One-command update from GitHub
+- **Update checker module** (`manus_cli/updater.py`): Handles all update logic
+- **Update cache**: Stores last check timestamp in `~/.config/manus/update_check.json`
+- **Configurable**: Can disable via `check_updates: false` in config.json
+
+### Changed
+- Version bumped from 5.3.0 to 5.4.0
+- README updated with auto-update documentation and examples
+- CLI startup now includes non-blocking update check
+
+### Technical Details
+- Uses GitHub Releases API to fetch latest version
+- Graceful error handling for network failures
+- Silent fallback if update check fails (doesn't interrupt workflow)
+- 24-hour check interval to avoid excessive API calls
+- Semantic version comparison (major.minor.patch)
+
+### New Command
+```bash
+manus update  # Check for updates and install if available
+```
+
+### Auto-Update Notification Example
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│  ⚠️  New version available!                                 │
+│                                                             │
+│  Current version: 5.3.0                                     │
+│  Latest version:  5.4.0                                     │
+│                                                             │
+│  Run manus update to upgrade                                │
+│  Or: pip3 install --upgrade git+https://github.com/...     │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## [4.2.0] - 2025-01-15
 
 ### 🚀 Major Release: Complete Spec-Kit Implementation

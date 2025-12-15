@@ -26,6 +26,7 @@ from .speckit import (
     SpecificationPhase,
     PlanningPhase,
 )
+from .updater import check_for_updates
 
 app = typer.Typer(help="Manus CLI v5.3 - Spec-Driven Development")
 console = Console()
@@ -52,7 +53,12 @@ def main(
     ] = None,
 ):
     """Manus CLI - Professional AI Agent Command-Line Interface with Spec-Driven Development."""
-    pass
+    # Check for updates (non-blocking, once per day)
+    try:
+        check_for_updates(silent=False)
+    except Exception:
+        # Silently ignore update check failures
+        pass
 
 # Configuration
 CONFIG_DIR = Path.home() / ".config" / "manus"
@@ -418,6 +424,23 @@ def version():
     table.add_row("Python", f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
     
     console.print(table)
+
+
+@app.command()
+def update():
+    """
+    Update Manus CLI to the latest version from GitHub.
+    """
+    from .updater import update_cli
+    
+    try:
+        update_cli()
+    except KeyboardInterrupt:
+        console.print("\n[yellow]Update cancelled by user.[/yellow]")
+        raise typer.Exit(1)
+    except Exception as e:
+        console.print(f"[red]Update failed: {e}[/red]")
+        raise typer.Exit(1)
 
 
 def main():
