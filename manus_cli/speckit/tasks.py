@@ -252,9 +252,14 @@ class TaskBreakdownPhase:
         """Generate milestones from phases"""
         milestones = []
         
+        from datetime import datetime, timedelta
+        base_date = datetime.now()
+        
         for i, phase in enumerate(phases, 1):
             milestone_name = phase['name'].split(':')[-1].strip() if ':' in phase['name'] else phase['name']
-            milestones.append(f"- [ ] **Milestone {i}**: {milestone_name} Complete - [DATE]")
+            # Estimate milestone date (1 week per milestone)
+            milestone_date = (base_date + timedelta(weeks=i)).strftime("%Y-%m-%d")
+            milestones.append(f"- [ ] **Milestone {i}**: {milestone_name} Complete - {milestone_date}")
         
         return "\n".join(milestones)
     

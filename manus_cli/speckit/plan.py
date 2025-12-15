@@ -47,34 +47,35 @@ class PlanningPhase:
         Returns:
             (success, plan_file_path)
         """
-        console.print(f"[cyan]→[/cyan] Creating implementation plan...")
+        from ..loading import loading_spinner
         
-        # Load template
-        if not self.template_file.exists():
-            console.print(f"[red]✗[/red] Template not found: {self.template_file}")
-            return False, Path()
+        with loading_spinner("Creating implementation plan", "Plan created"):
+            # Load template
+            if not self.template_file.exists():
+                console.print(f"[red]✗[/red] Template not found: {self.template_file}")
+                return False, Path()
+            
+            with open(self.template_file, "r") as f:
+                template = f.read()
+            
+            # Load spec to extract requirements
+            with open(spec_file, "r") as f:
+                spec_content = f.read()
+            
+            # Generate plan content
+            plan_content = self._generate_plan(
+                template=template,
+                spec_content=spec_content,
+                feature_name=metadata.get("feature_name", ""),
+                role=role
+            )
+            
+            # Save plan file
+            plan_file = feature_dir / "plan.md"
+            with open(plan_file, "w") as f:
+                f.write(plan_content)
         
-        with open(self.template_file, "r") as f:
-            template = f.read()
-        
-        # Load spec to extract requirements
-        with open(spec_file, "r") as f:
-            spec_content = f.read()
-        
-        # Generate plan content
-        plan_content = self._generate_plan(
-            template=template,
-            spec_content=spec_content,
-            feature_name=metadata.get("feature_name", ""),
-            role=role
-        )
-        
-        # Save plan file
-        plan_file = feature_dir / "plan.md"
-        with open(plan_file, "w") as f:
-            f.write(plan_content)
-        
-        console.print(f"[green]✓[/green] Plan created: {plan_file}")
+        console.print(f"[dim]  Location: {plan_file}[/dim]")
         
         return True, plan_file
     

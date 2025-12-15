@@ -53,28 +53,29 @@ class ConstitutionPhase:
             return True, str(self.constitution_file)
         
         # Create new constitution
-        console.print("[cyan]→[/cyan] Creating new constitution...")
+        from ..loading import loading_spinner
         
-        # Load template
-        if not self.template_file.exists():
-            console.print(f"[red]✗[/red] Template not found: {self.template_file}")
-            return False, ""
+        with loading_spinner("Creating new constitution", "Constitution created"):
+            # Load template
+            if not self.template_file.exists():
+                console.print(f"[red]✗[/red] Template not found: {self.template_file}")
+                return False, ""
+            
+            with open(self.template_file, "r") as f:
+                template = f.read()
+            
+            # Fill placeholders
+            constitution = self._fill_template(
+                template,
+                project_name=project_name,
+                project_description=project_description
+            )
+            
+            # Save constitution
+            with open(self.constitution_file, "w") as f:
+                f.write(constitution)
         
-        with open(self.template_file, "r") as f:
-            template = f.read()
-        
-        # Fill placeholders
-        constitution = self._fill_template(
-            template,
-            project_name=project_name,
-            project_description=project_description
-        )
-        
-        # Save constitution
-        with open(self.constitution_file, "w") as f:
-            f.write(constitution)
-        
-        console.print(f"[green]✓[/green] Constitution created: {self.constitution_file}")
+        console.print(f"[dim]  Location: {self.constitution_file}[/dim]")
         console.print(f"[dim]  Version: 1.0.0[/dim]")
         
         return True, str(self.constitution_file)

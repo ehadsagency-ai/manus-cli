@@ -228,9 +228,8 @@ class SpecKitEngine:
             phase_name: Phase name
             total_phases: Total number of phases
         """
-        console.print()
-        console.print(f"[bold cyan]Phase {phase_num}/{total_phases}: {phase_name}[/bold cyan]")
-        console.print("━" * 60)
+        from ..loading import show_phase_header as show_header
+        show_header(phase_num, total_phases, phase_name)
     
     def run_full_workflow(
         self,

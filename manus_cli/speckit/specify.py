@@ -56,30 +56,32 @@ class SpecificationPhase:
         feature_dir.mkdir(parents=True, exist_ok=True)
         
         console.print(f"[cyan]→[/cyan] Feature: {feature_name}")
-        console.print(f"[cyan]→[/cyan] Creating specification...")
         
-        # Load template
-        if not self.template_file.exists():
-            console.print(f"[red]✗[/red] Template not found: {self.template_file}")
-            return False, feature_dir, {}
+        from ..loading import loading_spinner
         
-        with open(self.template_file, "r") as f:
-            template = f.read()
+        with loading_spinner("Creating specification", "Specification created"):
+            # Load template
+            if not self.template_file.exists():
+                console.print(f"[red]✗[/red] Template not found: {self.template_file}")
+                return False, feature_dir, {}
+            
+            with open(self.template_file, "r") as f:
+                template = f.read()
+            
+            # Generate spec content
+            spec_content = self._generate_spec(
+                template=template,
+                feature_name=feature_name,
+                description=description,
+                role=role
+            )
+            
+            # Save spec file
+            spec_file = feature_dir / "spec.md"
+            with open(spec_file, "w") as f:
+                f.write(spec_content)
         
-        # Generate spec content
-        spec_content = self._generate_spec(
-            template=template,
-            feature_name=feature_name,
-            description=description,
-            role=role
-        )
-        
-        # Save spec file
-        spec_file = feature_dir / "spec.md"
-        with open(spec_file, "w") as f:
-            f.write(spec_content)
-        
-        console.print(f"[green]✓[/green] Specification created: {spec_file}")
+        console.print(f"[dim]  Location: {spec_file}[/dim]")
         
         # Create metadata
         metadata = {
