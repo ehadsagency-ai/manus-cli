@@ -1,3 +1,23 @@
+## [5.5.3] - 2024-12-15
+
+### 🎨 Perfect Centering
+
+This release updates the splash screen to use **"AI CLI"** for perfect centering and visual balance.
+
+### Changed
+- **Splash screen text**: Changed from "AI CLI DRIVEN" to "AI CLI" for better fit
+- **Perfect centering**: All elements now perfectly centered in the panel
+- **Compact design**: Cleaner, more professional appearance
+- **Visual balance**: Panel auto-sizes to content for optimal display
+
+### Technical Details
+- Reduced ASCII art width from 84 to 34 characters
+- Used `Align.center()` for perfect text centering
+- Panel uses `expand=False` for auto-sizing
+- All commands tested and verified
+
+---
+
 ## [5.5.2] - 2024-12-15
 
 ### 🎨 Splash Screen Update

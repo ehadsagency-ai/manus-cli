@@ -21,33 +21,33 @@ def show_splash_screen():
     they can start interacting with the CLI.
     """
     
-    # Main ASCII art banner - split into two lines for better fit
+    # Main ASCII art banner - AI CLI (compact and perfectly centered)
     banner = """
-             █████╗ ██╗      ██████╗██╗     ██╗
-            ██╔══██╗██║     ██╔════╝██║     ██║
-            ███████║██║     ██║     ██║     ██║
-            ██╔══██║██║     ██║     ██║     ██║
-            ██║  ██║██║     ╚██████╗███████╗██║
-            ╚═╝  ╚═╝╚═╝      ╚═════╝╚══════╝╚═╝
-
-        ██████╗ ██████╗ ██╗██╗   ██╗███████╗███╗   ██╗
-        ██╔══██╗██╔══██╗██║██║   ██║██╔════╝████╗  ██║
-        ██║  ██║██████╔╝██║██║   ██║█████╗  ██╔██╗ ██║
-        ██║  ██║██╔══██╗██║╚██╗ ██╔╝██╔══╝  ██║╚██╗██║
-        ██████╔╝██║  ██║██║ ╚████╔╝ ███████╗██║ ╚████║
-        ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝
+ █████╗ ██╗     ██████╗██╗     ██╗
+██╔══██╗██║    ██╔════╝██║     ██║
+███████║██║    ██║     ██║     ██║
+██╔══██║██║    ██║     ██║     ██║
+██║  ██║██║    ╚██████╗███████╗██║
+╚═╝  ╚═╝╚═╝     ╚═════╝╚══════╝╚═╝
     """
     
-    # Create the main panel
+    # Create the main panel - let Rich auto-size to content
     console.print()
-    console.print(Panel(
-        f"[bold cyan]{banner}[/bold cyan]\n\n"
-        f"[bold white]{'AI-POWERED COMMAND LINE INTERFACE':^90}[/bold white]\n"
-        f"[dim]{'Professional • Intelligent • Spec-Driven':^90}[/dim]",
+    
+    # Center the entire panel
+    from rich.align import Align as RichAlign
+    
+    panel = Panel(
+        Align.center(
+            f"[bold cyan]{banner}[/bold cyan]\n\n"
+            f"[bold white]AI-POWERED COMMAND LINE INTERFACE[/bold white]\n"
+            f"[dim]Professional • Intelligent • Spec-Driven[/dim]"
+        ),
         border_style="cyan",
-        padding=(1, 2),
-        width=96
-    ))
+        padding=(1, 2)
+    )
+    
+    console.print(RichAlign.center(panel))
     
     # Animated "AND AFTER YOU" prompt
     console.print()
