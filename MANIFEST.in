@@ -1,0 +1,7 @@
+recursive-include manus_cli/templates *.md
+recursive-include manus_cli/speckit/templates *.md
+include README.md
+include LICENSE
+include CHANGELOG.md
+include CODE_REVIEW.md
+include requirements.txt

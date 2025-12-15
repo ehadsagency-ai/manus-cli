@@ -11,7 +11,7 @@ long_description = readme_file.read_text(encoding="utf-8") if readme_file.exists
 
 setup(
     name="manus-cli",
-    version="5.2.0",
+    version="5.3.0",
     author="Manus CLI Team",
     author_email="support@manus.ai",
     description="A command-line interface for Manus AI with Spec-Driven Development for rigorous thinking",
@@ -19,6 +19,10 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/ehadsagency-ai/manus-cli",
     packages=find_packages(),
+    package_data={
+        'manus_cli': ['templates/*.md'],
+    },
+    include_package_data=True,
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -36,6 +40,7 @@ setup(
         "typer>=0.9.0",
         "requests>=2.31.0",
         "rich>=13.0.0",
+        "urllib3>=1.26.0,<2.0.0",  # Pin to v1.x for macOS compatibility
     ],
     entry_points={
         "console_scripts": [

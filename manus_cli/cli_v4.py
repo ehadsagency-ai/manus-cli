@@ -8,6 +8,7 @@ import sys
 import json
 from pathlib import Path
 from typing import Optional
+from typing_extensions import Annotated
 import typer
 from rich.console import Console
 from rich.panel import Panel
@@ -26,8 +27,32 @@ from .speckit import (
     PlanningPhase,
 )
 
-app = typer.Typer(help="Manus CLI v4.0 - Spec-Driven Development")
+app = typer.Typer(help="Manus CLI v5.3 - Spec-Driven Development")
 console = Console()
+
+# Version
+from . import __version__
+
+def version_callback(value: bool):
+    """Callback for --version flag."""
+    if value:
+        console.print(f"[bold green]Manus CLI v{__version__}[/bold green]")
+        raise typer.Exit()
+
+@app.callback()
+def main(
+    version: Annotated[
+        Optional[bool],
+        typer.Option(
+            "--version", "-v",
+            callback=version_callback,
+            is_eager=True,
+            help="Show version and exit"
+        )
+    ] = None,
+):
+    """Manus CLI - Professional AI Agent Command-Line Interface with Spec-Driven Development."""
+    pass
 
 # Configuration
 CONFIG_DIR = Path.home() / ".config" / "manus"
