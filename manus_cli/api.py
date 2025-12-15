@@ -110,7 +110,7 @@ class ManusClient:
             response = requests.post(
                 self.API_URL, 
                 headers=headers, 
-                data=json.dumps(payload),
+                json=payload,
                 stream=stream
             )
             response.raise_for_status()
