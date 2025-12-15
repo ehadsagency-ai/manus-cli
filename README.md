@@ -147,6 +147,36 @@ manus --version
 - **OS**: macOS, Linux, Windows (WSL)
 - **Internet**: Required for API calls
 
+### Uninstall
+
+To completely remove Manus CLI from your system:
+
+```bash
+# Uninstall the package
+pip3 uninstall manus-cli
+
+# Confirm when prompted (or use -y to skip confirmation)
+# Are you sure you want to uninstall manus-cli? [y/N]: y
+```
+
+**Optional**: Remove configuration files:
+
+```bash
+# Remove config directory (macOS/Linux)
+rm -rf ~/.config/manus/
+
+# Remove history file
+rm -f ~/.manus_history
+```
+
+**Verify uninstallation**:
+
+```bash
+# This should return "command not found"
+manus --version
+```
+
+
 ---
 
 ## ⚡ Quick Start
