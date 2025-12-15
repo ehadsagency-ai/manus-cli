@@ -86,7 +86,7 @@ Phase 1/3: Constitution
 
 ```bash
 # Install from GitHub
-pip install git+https://github.com/ehadsagency-ai/manus-cli.git
+pip3 install git+https://github.com/ehadsagency-ai/manus-cli.git
 
 # Verify installation
 manus --version
@@ -101,21 +101,43 @@ git clone https://github.com/ehadsagency-ai/manus-cli.git
 cd manus-cli
 
 # Install in development mode
-pip install -e .
+pip3 install -e .
 ```
 
-### macOS Users
+### macOS Users - Important!
 
-If you see a PATH warning during installation:
+⚠️ **After installation, you MUST add the installation directory to your PATH.**
+
+You'll see this warning:
+```
+WARNING: The script manus is installed in '/Users/YOUR_USER/Library/Python/3.9/bin' which is not on PATH.
+```
+
+**Fix it with these steps:**
+
+**Step 1**: Add to PATH (choose your shell):
 
 ```bash
-# Add to PATH (zsh)
+# For zsh (default on modern macOS)
 echo 'export PATH="$HOME/Library/Python/3.9/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
 
-# Add to PATH (bash)
+# For bash (older macOS)
 echo 'export PATH="$HOME/Library/Python/3.9/bin:$PATH"' >> ~/.bash_profile
 source ~/.bash_profile
+```
+
+**Step 2**: Verify it works:
+
+```bash
+manus --version
+# Should output: Manus CLI v5.3.0
+```
+
+**Alternative**: Run directly without PATH (temporary):
+
+```bash
+~/Library/Python/3.9/bin/manus --version
 ```
 
 ### Requirements
@@ -517,7 +539,7 @@ source ~/.zshrc
 **Solution**: Upgrade to v5.3.0 or later:
 
 ```bash
-pip install --upgrade --force-reinstall git+https://github.com/ehadsagency-ai/manus-cli.git
+pip3 install --upgrade --force-reinstall git+https://github.com/ehadsagency-ai/manus-cli.git
 ```
 
 ### Issue: `Template not found`
@@ -525,7 +547,7 @@ pip install --upgrade --force-reinstall git+https://github.com/ehadsagency-ai/ma
 **Solution**: Reinstall with `--force-reinstall` to include templates:
 
 ```bash
-pip install --force-reinstall git+https://github.com/ehadsagency-ai/manus-cli.git
+pip3 install --force-reinstall git+https://github.com/ehadsagency-ai/manus-cli.git
 ```
 
 ### Issue: API connection errors
@@ -564,7 +586,7 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install in development mode
-pip install -e .
+pip3 install -e .
 
 # Run tests
 python -m pytest tests/
