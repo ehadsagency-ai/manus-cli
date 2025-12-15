@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "manus-cli"
-version = "5.5.0"
+version = "5.5.1"
 description = "A command-line interface for Manus AI with Spec-Driven Development for rigorous thinking"
 readme = "README.md"
 authors = [

@@ -98,22 +98,67 @@ def get_api_client() -> Optional[ManusClient]:
 @app.command()
 def configure(
     api_key: str = typer.Option(None, "--api-key", help="Manus API key"),
-    mode: str = typer.Option("quality", "--mode", help="Default mode (speed/balanced/quality)"),
-    role: str = typer.Option("assistant", "--role", help="Default role"),
-    streaming: bool = typer.Option(False, "--streaming/--no-streaming", help="Enable streaming"),
+    mode: str = typer.Option(None, "--mode", help="Default mode (speed/balanced/quality)"),
+    role: str = typer.Option(None, "--role", help="Default role"),
+    streaming: bool = typer.Option(None, "--streaming/--no-streaming", help="Enable streaming"),
+    show: bool = typer.Option(False, "--show", help="Show current configuration"),
 ):
     """
     Configure Manus CLI settings.
+    
+    Examples:
+        manus configure --api-key YOUR_KEY
+        manus configure --mode quality --role developer
+        manus configure --show
     """
     config = load_config()
     
+    # If --show flag, just display config and exit
+    if show:
+        if not config:
+            console.print("[yellow]No configuration found. Run 'manus configure --api-key YOUR_KEY' to get started.[/yellow]")
+            return
+        
+        table = Table(title="Current Configuration")
+        table.add_column("Setting", style="cyan")
+        table.add_column("Value", style="white")
+        
+        table.add_row("API Key", "***" + config.get("api_key", "")[-8:] if config.get("api_key") else "Not set")
+        table.add_row("Default Mode", config.get("default_mode", "quality"))
+        table.add_row("Default Role", config.get("default_role", "assistant"))
+        table.add_row("Streaming", str(config.get("streaming", True)))
+        table.add_row("Spec-Driven", str(config.get("spec_driven", {}).get("enabled", True)))
+        
+        console.print(table)
+        return
+    
+    # If no options provided, show help
+    if not any([api_key, mode, role, streaming is not None]):
+        console.print("[yellow]No options provided. Use --help to see available options or --show to view current config.[/yellow]")
+        return
+    
+    # Update config
     if api_key:
         config["api_key"] = api_key
         console.print("[green]✓[/green] API key configured")
     
-    config["default_mode"] = mode
-    config["default_role"] = role
-    config["streaming"] = streaming
+    if mode:
+        if mode not in ["speed", "balanced", "quality"]:
+            console.print("[red]Error:[/red] Mode must be one of: speed, balanced, quality")
+            raise typer.Exit(1)
+        config["default_mode"] = mode
+        console.print(f"[green]✓[/green] Default mode set to {mode}")
+    
+    if role:
+        if role not in ROLES:
+            console.print(f"[red]Error:[/red] Invalid role. Run 'manus roles' to see available roles.")
+            raise typer.Exit(1)
+        config["default_role"] = role
+        console.print(f"[green]✓[/green] Default role set to {role}")
+    
+    if streaming is not None:
+        config["streaming"] = streaming
+        console.print(f"[green]✓[/green] Streaming {'enabled' if streaming else 'disabled'}")
     
     # Spec-Driven defaults
     if "spec_driven" not in config:
@@ -129,8 +174,9 @@ def configure(
     save_config(config)
     console.print("[green]✓[/green] Configuration saved")
     
-    # Show current config
-    table = Table(title="Current Configuration")
+    # Show updated config
+    console.print()
+    table = Table(title="Updated Configuration")
     table.add_column("Setting", style="cyan")
     table.add_column("Value", style="white")
     

@@ -1,3 +1,31 @@
+## [5.5.1] - 2024-12-15
+
+### 🐛 Hotfix Release
+
+This hotfix release fixes critical packaging issues and adds missing features.
+
+### Fixed
+- **pyproject.toml version mismatch**: Updated from 5.3.0 to 5.5.1
+- **Missing subpackages**: Changed `packages = ["manus_cli"]` to `packages = {find = {}}` to include all subpackages (speckit, etc.)
+- **Package installation**: pip now correctly installs version 5.5.1 with all modules
+
+### Added
+- **`--show` flag for configure command**: Display current configuration without making changes
+- **Input validation**: Mode and role validation in configure command
+- **Better error messages**: Clear feedback for invalid mode or role values
+
+### Changed
+- Configure command now requires at least one option (or --show)
+- Mode and role are now optional in configure (only update if provided)
+- Improved configure command help text with examples
+
+### Technical Details
+- Fixed pyproject.toml to use `find_packages` equivalent
+- All version files synchronized (5.5.1)
+- Comprehensive testing performed
+
+---
+
 ## [5.5.0] - 2024-12-15
 
 ### ✨ Interactive Splash Screen & Fixed Interactive Mode
