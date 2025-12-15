@@ -69,7 +69,7 @@ def configure(
     api_key: str = typer.Option(None, "--api-key", help="Manus API key"),
     mode: str = typer.Option("quality", "--mode", help="Default mode (speed/balanced/quality)"),
     role: str = typer.Option("assistant", "--role", help="Default role"),
-    streaming: bool = typer.Option(True, "--streaming/--no-streaming", help="Enable streaming"),
+    streaming: bool = typer.Option(False, "--streaming/--no-streaming", help="Enable streaming"),
 ):
     """
     Configure Manus CLI settings.
@@ -177,12 +177,12 @@ def chat(
     try:
         if config.get("streaming", True):
             console.print(f"[bold cyan]{role.title()}:[/bold cyan]", end=" ")
-            for chunk in client.chat_stream(message, system_prompt=system_prompt, mode=mode):
+            for chunk in client.stream_task(message, system_prompt=system_prompt, mode=mode):
                 console.print(chunk, end="")
             console.print()  # New line after streaming
         else:
-            response = client.chat(message, system_prompt=system_prompt, mode=mode)
-            console.print(f"[bold cyan]{role.title()}:[/bold cyan] {response}")
+            response_text = client.chat(message, system_prompt=system_prompt, mode=mode)
+            console.print(f"[bold cyan]{role.title()}:[/bold cyan] {response_text}")
     
     except Exception as e:
         console.print(f"[red]Error:[/red] {e}")

@@ -344,3 +344,80 @@ class ManusClient:
         conversations.sort(key=lambda x: x.get("timestamp", 0), reverse=True)
         
         return conversations
+
+    def chat(
+        self,
+        prompt: str,
+        mode: str = "speed",
+        system_prompt: Optional[str] = None,
+        poll_interval: float = 2.0,
+        max_wait: int = 300
+    ) -> str:
+        """
+        Send a chat message and wait for the response (synchronous).
+        
+        This method creates a task and polls until completion.
+        
+        Args:
+            prompt: The message to send
+            mode: Execution mode (speed/balanced/quality)
+            system_prompt: Optional system prompt
+            poll_interval: Seconds between status checks
+            max_wait: Maximum seconds to wait for completion
+            
+        Returns:
+            The response text
+            
+        Raises:
+            ManusAPIError: If the request fails or times out
+        """
+        # Create the task
+        task_data = self.create_task(
+            prompt=prompt,
+            mode=mode,
+            system_prompt=system_prompt,
+            stream=False
+        )
+        
+        task_id = task_data.get("task_id")
+        if not task_id:
+            raise ManusAPIError("No task_id in response")
+        
+        # Poll for completion
+        elapsed = 0
+        while elapsed < max_wait:
+            status_data = self.get_task_status(task_id)
+            
+            # Check status
+            status = status_data.get("status")
+            
+            if status == "completed":
+                # Extract result from output array
+                output_array = status_data.get("output", [])
+                
+                # Find the last assistant message with content
+                for item in reversed(output_array):
+                    if item.get("role") == "assistant" and "content" in item:
+                        content = item.get("content", [])
+                        if content and len(content) > 0:
+                            text = content[0].get("text", "")
+                            if text:
+                                return text
+                
+                # Fallback: return empty if no content found
+                return ""
+            
+            elif status == "failed":
+                error = status_data.get("error", "Unknown error")
+                raise ManusAPIError(f"Task failed: {error}")
+            
+            elif status in ["pending", "running"]:
+                # Still processing, wait and retry
+                time.sleep(poll_interval)
+                elapsed += poll_interval
+            
+            else:
+                # Unknown status
+                raise ManusAPIError(f"Unknown task status: {status}")
+        
+        raise ManusAPIError(f"Task timed out after {max_wait} seconds")
